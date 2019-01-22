@@ -101,7 +101,8 @@ _, _, e = connectUDP.ReadFrom(receivePacketBuffer) // receiving message from ser
 logerror(e)
 
 ret_id, n := binary.Uvarint(receivePacketBuffer)
-if ret_id == id { // checking the id received from the server
+if ret_id == id {// checking the id received from the server
+	diff := 0
 	time_received, _ := binary.Varint(receivePacketBuffer[n:]) // taking the time recived from received packet
 	diff := (time_received - time_sent.UnixNano())// finding the difference
 }
