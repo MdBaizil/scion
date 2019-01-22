@@ -32,7 +32,7 @@ var (
 
 	recvHash map[uint64]*Checkpoint // intialising datatype map
 	udpConnection *snet.Conn
-	multiplier int = 1
+
 )
 
 func check(e error) {
@@ -73,7 +73,7 @@ sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
 
   seed := rand.NewSource(time.Now().UnixNano()) //
 	iters := 0
-	for iters < (total_NUM*multiplier) {
+	for iters < (total_NUM) {
 		iters += 1
 
 		id := rand.New(seed).Uint64()
