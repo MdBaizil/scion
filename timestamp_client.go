@@ -103,7 +103,8 @@ check(e)
 ret_id, n := binary.Uvarint(receivePacketBuffer)
 if ret_id == id { // checking the id received from the server
 	time_received, _ := binary.Varint(receivePacketBuffer[n:]) // taking the time recived from received packet
-	diff := (time_received - time_sent.UnixNano()) // finding the difference
+	diff := (time_received - time_sent.UnixNano())// finding the difference
+}
 
 var difference float64 = float64(diff)
 
