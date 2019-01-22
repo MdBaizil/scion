@@ -46,21 +46,21 @@ func AvBottleneckBW() (float64, float64) { // finding average bottleneck bandwid
 sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
 	i := 0
 	for _, c := range recvHash {
-		if c.recvd != 0 {
-			sorted[i] = v
+		if c.R != 0 {
+			sorted[i] = c
 			i += 1
 		}
 	}
   sort.Slice(sorted, func(i, j int) bool { return sorted[i].S < sorted[j].S })
 
-  var S, R int64 //intialising variables
+  var S_int, R_int int64 //intialising variables
 
   for i := 1; i < total_NUM; i+=1 {
-		S += (sorted[i].S - sorted[i-1].S)// finding difference intervals between sent packets
-		R += (sorted[i].R - sorted[i-1].R)// finding difference intervals between received packets
+		S_int += (sorted[i].S - sorted[i-1].S)// finding difference intervals between sent packets
+		R_int += (sorted[i].R - sorted[i-1].R)// finding difference intervals between received packets
 	}
 
-  sentbandwidth := float64(data_SIZE*8*1e3) / (float64(S_int) / float64(total_NUM-1))
+  sentbandwidth := float64(data_SIZE*8*1e3) / (float64(S_int) / float64(total_NUM-1)) // finding bandwidth using equation size/time
   receivedbandwidth := float64(data_SIZE*8*1e3) / (float64(R_int) / float64(total_NUM-1))
 
   return sentbandwidth, receivedbandwidth
@@ -142,14 +142,14 @@ mt.Println("\nPath:", pathEntry.Path.String())
 	remote.Path = spath.New(pathEntry.Path.FwdPath)
 	remote.Path.InitOffsets()
 	remote.NextHopHost = pathEntry.HostInfo.Host()
-	remote.NextHopPort = pathEntry.HostInfo.Port
+	remote.NextHopPort = pathEntry.HostInfo.Port 
 
 	udpConnection, err = snet.DialSCION("udp4", source, destination)
 	check(e)
 
   recvHash = make(map[uint64]*Checkpoint) // creating hash table of checkpoints
 
-  sendPackets()
+     sendPackets()
 	count := recvPackets()
 
   fmt.Println("# packets:", num)
