@@ -78,7 +78,7 @@ daddr := "/run/shm/dispatcher/default.sock"
 snet.Init(client.IA, sciond.GetDefaultSCIONDPath(nil), daddr) //initialises scion network
 
 
-scionconnection, ef = snet.DialSCION("udp4", client, server) // client connects to server through UDP
+connectUDP, e = snet.DialSCION("udp4", client, server) // client connects to server through UDP
 
 logerror(e)
 
@@ -94,11 +94,11 @@ n := binary.PutUvarint(sendPacketBuffer, id)
 sendPacketBuffer[n] = 0
 
 time_sent := time.Now() // sending the time now
-_, e = udpConnection.Write(sendPacketBuffer) //sending message to server
-check(e)
+_, e = connectUDP.Write(sendPacketBuffer) //sending message to server
+logerror(e)
 
-_, _, e = udpConnection.ReadFrom(receivePacketBuffer) // receiving message from server
-check(e)
+_, _, e = connectUDP.ReadFrom(receivePacketBuffer) // receiving message from server
+logerror(e)
 
 ret_id, n := binary.Uvarint(receivePacketBuffer)
 if ret_id == id { // checking the id received from the server
@@ -108,7 +108,7 @@ if ret_id == id { // checking the id received from the server
 
 var difference float64 = float64(diff)
 
-mt.Printf("\nSource: %s\nDestination: %s\n", sourceAddress, destinationAddress);
+fmt.Printf("\nSource: %s\nDestination: %s\n", clientadd, serveradd);
 fmt.Println("Time estimates:")
 
 fmt.Printf("\tRTT - %.3fms\n", difference/1e6)
