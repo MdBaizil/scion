@@ -26,7 +26,7 @@ import (
 
 if e!=nil{
 
- log.Println(ef)
+ log.Println(e)
 
 }
 
@@ -59,13 +59,13 @@ flag.StringVar(&serveradd, "serveradd", "", "adress of scion server")  // fetch 
 
  daddr := "/run/shm/dispatcher/default.sock"
 
-	snet.Init(ser.IA, sciond.GetDefaultSCIONDPath(nil), daddr)  //initialises scion network
+	snet.Init(Server.IA, sciond.GetDefaultSCIONDPath(nil), daddr)  //initialises scion network
 
-  scionconnection, e = snet.ListenSCION("udp4", Server) // server will listen for client connections
+  connectUDP, e = snet.ListenSCION("udp4", Server) // server will listen for client connections
 
  logerror(e)
 
- logerror(ef)
+ logerror(e)
 
 receivePacketBuffer := make([]byte, 2500)  //Creating a buffer array of specified size
 
@@ -73,7 +73,7 @@ receivePacketBuffer := make([]byte, 2500)  //Creating a buffer array of specifie
 
 for {
 
-  		k, clientAddr, e := scionconnection.ReadFrom(receivePacketBuffer)  //Reads the receiver buffer
+  		k, clientAddr, e := connectUDP.ReadFrom(receivePacketBuffer)  //Reads the receiver buffer
 
   	 logerror(e)
 
@@ -83,7 +83,7 @@ for {
 
   		m := binary.PutVarint(receivePacketBuffer[k:], time.Now().UnixNano())  // adding time to received array
 
-  		_, e = scionconnection.WriteTo(receivePacketBuffer[:k+m], clientAddr)  //sending back the response to client
+  		_, e = connectUDP.WriteTo(receivePacketBuffer[:k+m], clientAddr)  //sending back the response to client
 
   		 logerror(e)
 
