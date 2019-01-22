@@ -165,4 +165,4 @@ mt.Println("\nPath:", pathEntry.Path.String())
 	fmt.Println("Bottleneck Bandwidth estimate:")
 	fmt.Printf("\tBW - %.3fMbps\n", receivedbandwidth)
 }
-© 2019 GitHub, Inc.
+
