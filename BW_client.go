@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	data_SIZE int = 4000
+	data_SIZE int = 2000
 	total_NUM int = 5
 )
 
@@ -56,8 +56,8 @@ sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
   var S_int, R_int int64 //intialising variables
 
   for i := 1; i < total_NUM; i+=1 {
-		S_int += (sorted[i].S - sorted[i-1].S)// finding difference intervals between sent packets
-		R_int += (sorted[i].R - sorted[i-1].R)// finding difference intervals between received packets
+		S_int += (sorted[i].S_int - sorted[i-1].S_int)// finding difference intervals between sent packets
+		R_int += (sorted[i].R_int - sorted[i-1].R_int)// finding difference intervals between received packets
 	}
 
   sentbandwidth := float64(data_SIZE*8*1e3) / (float64(S_int) / float64(total_NUM-1)) // finding bandwidth using equation size/time
@@ -69,7 +69,7 @@ sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
   func sendPackets() {
   var e error
 
-  sendPacketBuffer := make([]byte, PACKET_SIZE + 1)
+  sendPacketBuffer := make([]byte, data_SIZE + 1)
 
   seed := rand.NewSource(time.Now().UnixNano()) //
 	iters := 0
@@ -79,7 +79,7 @@ sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
 		id := rand.New(seed).Uint64()
 		_ = binary.PutUvarint(sendPacketBuffer, id)
 
-		recvMap[id] = &Checkpoint{time.Now().UnixNano(), 0}
+		recvHash[id] = &Checkpoint{time.Now().UnixNano(), 0}
 		_, err = udpConnection.Write(sendPacketBuffer)  // writing packets to server
 		check(e)
 		time.Sleep(time.Microsecond)
@@ -127,22 +127,7 @@ func recvPackets() int {
     dAddr := "/run/shm/dispatcher/default.sock"
 	snet.Init(source.IA, sciond.GetDefaultSCIONDPath(nil), dAddr)
 
-  var pathEntry *sciond.PathReplyEntry
-var options spathmeta.AppPathSet
-options = snet.DefNetwork.PathResolver().Query(source.IA, destination.IA)
 
-var biggest string
-for k, entry := range options {
-  if k.String() > biggest {
-    pathEntry = entry.Entry /* Choose the first random one. */
-  }
-}
-
-mt.Println("\nPath:", pathEntry.Path.String())
-	remote.Path = spath.New(pathEntry.Path.FwdPath)
-	remote.Path.InitOffsets()
-	remote.NextHopHost = pathEntry.HostInfo.Host()
-	remote.NextHopPort = pathEntry.HostInfo.Port 
 
 	udpConnection, err = snet.DialSCION("udp4", source, destination)
 	check(e)
@@ -152,8 +137,8 @@ mt.Println("\nPath:", pathEntry.Path.String())
      sendPackets()
 	count := recvPackets()
 
-  fmt.Println("# packets:", num)
-	if num == 0 {
+  fmt.Println("# packets:", count)
+	if count == 0 {
 		check(fmt.Errorf("No packets received from server"))
 	}
 
