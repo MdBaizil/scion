@@ -88,6 +88,7 @@ sendPacketBuffer := make([]byte, 16)   //Creating a buffer array of specified si
 
 
 seed := rand.NewSource(time.Now().UnixNano())
+var diff int64 = 0
 
 id := rand.New(seed).Uint64() // id for the send packet
 n := binary.PutUvarint(sendPacketBuffer, id)
@@ -102,7 +103,7 @@ logerror(e)
 
 ret_id, n := binary.Uvarint(receivePacketBuffer)
 if ret_id == id {// checking the id received from the server
-	diff := 0
+	
 	time_received, _ := binary.Varint(receivePacketBuffer[n:]) // taking the time recived from received packet
 	diff := (time_received - time_sent.UnixNano())// finding the difference
 }
