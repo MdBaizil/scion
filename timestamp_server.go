@@ -47,7 +47,7 @@ var (
  connectUDP *snet.Conn
 
 )
-flag.StringVar(&serveradd, "serveradd", "", "adress of scion server")  // fetch values from command line
+flag.StringVar(&serveradd, "s", "", "adress of scion server")  // fetch values from command line
 
  flag.Parse()
 
