@@ -82,7 +82,7 @@ sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
 		recvHash[id] = &Checkpoint{time.Now().UnixNano(), 0}
 		_, err = udpConnection.Write(sendPacketBuffer)  // writing packets to server
 		check(e)
-		time.Sleep(time.Microsecond)
+		
 	}
 }
 func recvPackets() int {
