@@ -88,7 +88,7 @@ sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
 func recvPackets() int {
 
 	var e error
-	receivePacketBuffer := make([]byte, PACKET_SIZE + 1)
+	receivePacketBuffer := make([]byte, data_SIZE + 1)
 
   for count < total_NUM {
 
