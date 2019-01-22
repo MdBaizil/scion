@@ -3,6 +3,7 @@
 package main
 
 
+
 import (
 
 	"flag"
@@ -111,4 +112,5 @@ fmt.Println("Time estimates:")
 
 fmt.Printf("\tRTT - %.3fms\n", difference/1e6)
 	fmt.Printf("\tLatency - %.3fms\n", difference/2e6)
+	
 }
