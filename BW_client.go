@@ -66,7 +66,7 @@ sorted := make([]*Checkpoint, total_NUM) // sorting checkpoints
   return sentbandwidth, receivedbandwidth
   }
 
-  func packets { // function for sending and receiving packets
+func packets() { // function for sending and receiving packets
   var e error
 
   sentpacket := make([]byte, 3000)
