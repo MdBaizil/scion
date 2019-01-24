@@ -102,7 +102,7 @@ func packets() { // function for sending and receiving packets
  return sentpacket, count
   }
 
-func main() {
+	func main() {
 var (
      sourceAddr string
      destinationAddr string
