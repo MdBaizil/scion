@@ -100,14 +100,14 @@ func packets() { // function for sending and receiving packets
 }
  return sentpacket, count
 
- func main() {
-	var (
-		sourceAddr string
-		destinationAddr string
+func main() {
+var (
+     sourceAddr string
+     destinationAddr string
 
-                e    error
-		client  *snet.Addr
-		server *snet.Addr
+     e    error
+     client  *snet.Addr
+     server *snet.Addr
   )
 
 	flag.StringVar(&clientadd, "c", "", "address of client") // fetch address of the client from command line
