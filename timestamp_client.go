@@ -23,6 +23,9 @@ import (
 	"github.com/scionproto/scion/go/lib/sciond"
 
 )
+var (
+connectUDP *snet.Conn
+)
 
 func geterror(e error) {   //Error function
 
@@ -52,7 +55,7 @@ var ( // necessary variable declarations
 
  server *snet.Addr
 
- connectUDP *snet.Conn
+ 
 
 )
 
