@@ -82,6 +82,7 @@ func packets() { // function for sending and receiving packets
 		recvHash[id] = &Checkpoint{time.Now().UnixNano(), 0} // creating hash table for sentpackets
 		_, err = connectUDP.Write(sentpacket)  // writing packets to server
 		geterror(e)
+	}
 
 
    receivedpackets := make([]byte, 3000)
