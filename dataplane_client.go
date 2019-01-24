@@ -16,7 +16,7 @@ import (
 
 	"time"
 
-  "encoding/binary"
+        "encoding/binary"
 
 	"github.com/scionproto/scion/go/lib/snet" //importing snet packages for the scion connections
 
@@ -52,8 +52,7 @@ var ( //variable declarations
 
  server *snet.Addr
 
- makeconnection *snet.Conn
-
+ udpConnection *snet.Conn
 )
 
 flag.StringVar(&clientadd, "c", "", "address of client") // fetch address values from command line
@@ -78,7 +77,7 @@ daddr := "/run/shm/dispatcher/default.sock"
 snet.Init(client.IA, sciond.GetDefaultSCIONDPath(nil), daddr) //initialises scion network
 
 
-makeconnection, e = snet.DialSCION("udp4", client, server) // client connects to server through UDP
+ udpConnection, e = snet.DialSCION("udp4", client, server) // client connects to server through UDP
 
 geterror(e)
 
@@ -96,10 +95,10 @@ n := binary.PutUvarint(packetsent, id)
 packetsent[n] = 0
 
 Ts := time.Now() // sending the time now
-_, e = makeconnection.Write(packetsent) //sending message to server
+_, e = udpConnection.Write(packetsent) //sending message to server
 geterror(e)
 
-_, _, e = makeconnection.ReadFrom(packetreceived) // receiving message from server
+_, _, e = udpConnection.ReadFrom(packetreceived) // receiving message from server
 geterror(e)
 
 	Tr, _ := binary.Varint(packetreceived[n:]) // taking the time recived from received packet
