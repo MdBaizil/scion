@@ -97,8 +97,9 @@ func packets() { // function for sending and receiving packets
  count += 1
  count := receivedpackets
   }
-}
+
  return sentpacket, count
+  }
 
 func main() {
 var (
