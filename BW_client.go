@@ -98,14 +98,14 @@ func packets() { // function for sending and receiving packets
  count := receivedpackets
   }
 }
- return sentpacket count
+ return sentpacket, count
 
  func main() {
 	var (
 		sourceAddr string
 		destinationAddr string
 
-    e    error
+                e    error
 		client  *snet.Addr
 		server *snet.Addr
   )
